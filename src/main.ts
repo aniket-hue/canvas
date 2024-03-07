@@ -10,17 +10,20 @@ const boundingRect = c.getBoundingClientRect();
 
 const getRandomXY = () => [Math.random() * window.innerWidth, Math.random() * window.innerHeight];
 
-let [x, y] = [100, 200];
+let [x, y] = getRandomXY();
 
-const radius = 100;
-let velocity = 10;
+const radius = 10;
+let dx = 2;
+let dy = 2;
 
 const animate = () => {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  if (x + radius > boundingRect.right || x - radius < 0) velocity = -velocity;
+  if (x + radius > boundingRect.right || x - radius < 0) dx = -dx;
+  if (y + radius > boundingRect.bottom || y - radius < 0) dy = -dy;
 
-  x += velocity;
+  x += dx;
+  y += dy;
 
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
