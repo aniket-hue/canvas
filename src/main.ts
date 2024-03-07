@@ -1,36 +1,36 @@
-const scale = window.devicePixelRatio; // <--- Change to 1 on retina screens to see blurry canvas.
-const c = document.getElementById("canvas") as HTMLCanvasElement;
-const ctx = c.getContext("2d") as CanvasRenderingContext2D;
+import Canvas from "./js/canvas.ts";
+import Circle from "./js/circle.ts";
 
-c.width = window.innerWidth - 20;
-c.height = window.innerHeight - 20;
-c.style.background = "#333333";
-
-const boundingRect = c.getBoundingClientRect();
+const canvas = new Canvas("canvas");
+canvas.setCanvasSize(window.innerWidth - 20, window.innerHeight - 20);
+canvas.getCanvas().style.background = "#333333";
 
 const getRandomXY = () => [Math.random() * window.innerWidth, Math.random() * window.innerHeight];
 
-let [x, y] = getRandomXY();
+const circles: Circle[] = [];
+for (let i = 0; i < 10; i++) {
+  let [x, y] = getRandomXY();
 
-const radius = 10;
-let dx = 2;
-let dy = 2;
+  const radius = 10;
+  let dx = Math.random() - 0.5;
+  let dy = Math.random() - 0.5;
 
-const animate = () => {
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  const newCircle = new Circle(canvas, radius, x, y, { fillStyle: "#ea92c1" });
+  newCircle.move({ dx, dy });
 
-  if (x + radius > boundingRect.right || x - radius < 0) dx = -dx;
-  if (y + radius > boundingRect.bottom || y - radius < 0) dy = -dy;
+  circles.push(newCircle);
+}
 
-  x += dx;
-  y += dy;
+const getMeBouncingCircle = () => {
+  const animate = () => {
+    requestAnimationFrame(animate);
+    canvas.getContext().clearRect(0, 0, canvas.getCanvas().width, canvas.getCanvas().height);
 
-  ctx.beginPath();
-  ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-  ctx.fillStyle = "#ea92c1";
-  ctx.fill();
-
-  requestAnimationFrame(animate);
+    circles.forEach((circle) => {
+      circle.update();
+    });
+  };
+  animate();
 };
 
-animate();
+getMeBouncingCircle();
