@@ -4,7 +4,6 @@ import { ICanvas } from "./canvas.ts";
 class Circle implements Shapes, Color, Movable {
   canvas: ICanvas;
 
-  radius: number;
   fillStyle: string | undefined;
 
   dx: number = 2;
@@ -13,19 +12,38 @@ class Circle implements Shapes, Color, Movable {
   x: number;
   y: number;
 
-  constructor(
-    canvas: ICanvas,
-    radius: number,
-    x: number,
-    y: number,
+  radius: number;
+  maxRadius: number;
+  minRadius: number;
+  constructor({
+    canvas,
+    maxRadius,
+    minRadius,
+    y,
+    color,
+    radius,
+    x,
+  }: {
+    canvas: ICanvas;
+    radius: number;
+
+    maxRadius: number;
+    minRadius: number;
+
+    x: number;
+    y: number;
     color: {
       fillStyle?: string;
+
       strokeStyle?: string;
-    }
-  ) {
+    };
+  }) {
     this.canvas = canvas;
 
     this.radius = radius;
+    this.maxRadius = maxRadius;
+    this.minRadius = minRadius;
+
     this.x = x;
     this.y = y;
 
@@ -36,6 +54,7 @@ class Circle implements Shapes, Color, Movable {
     const ctx = this.canvas.getContext();
 
     ctx.beginPath();
+
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
 
     if (this.fillStyle) {
@@ -59,8 +78,6 @@ class Circle implements Shapes, Color, Movable {
 
     if (x + radius > rightBounds || x - radius < 0) this.dx = -this.dx;
     if (y + radius > bottomBounds || y - radius < 0) this.dy = -this.dy;
-
-    console.log(y + radius > bottomBounds || y - radius < 0);
 
     this.x += this.dx;
     this.y += this.dy;

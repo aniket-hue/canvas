@@ -3,6 +3,12 @@ export interface ICanvas {
   getCanvas(): HTMLCanvasElement;
   getContext(): CanvasRenderingContext2D;
   setCanvasSize(width: number, height: number): void;
+
+  addEventListener<K extends keyof HTMLElementEventMap>(
+    type: K,
+    listener: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => any,
+    options?: boolean | AddEventListenerOptions
+  ): void;
 }
 
 class Canvas implements ICanvas {
@@ -32,6 +38,14 @@ class Canvas implements ICanvas {
   public setCanvasSize(width: number, height: number): void {
     this.canvas.width = width;
     this.canvas.height = height;
+  }
+
+  addEventListener<K extends keyof HTMLElementEventMap>(
+    type: K,
+    listener: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => any,
+    options?: boolean | AddEventListenerOptions
+  ): void {
+    this.canvas.addEventListener(type, listener, options);
   }
 }
 

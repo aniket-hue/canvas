@@ -11,6 +11,9 @@ export type Movable = {
 export interface Shapes {
   canvas: ICanvas;
 
+  maxRadius: number;
+  minRadius: number;
+
   x: number;
   y: number;
 
