@@ -1,10 +1,13 @@
-import { Circle as ICircle, Color, Interface, Movable, Velocity } from "./interface.ts";
+import { Circle as ICircle, Color, Gravity, Interface, Movable, Velocity } from "./interface.ts";
 import { ICanvas } from "./canvas.ts";
 
-class Circle implements Interface, ICircle, Color, Movable {
+class Circle implements Interface, ICircle, Color, Movable, Gravity {
   canvas: ICanvas;
 
   fillStyle: string | undefined;
+  strokeStyle?: string | undefined;
+
+  gravity: number = 0;
 
   dx: number = 0;
   dy: number = 0;
@@ -13,8 +16,8 @@ class Circle implements Interface, ICircle, Color, Movable {
   y: number;
 
   radius: number;
-  maxRadius: number;
-  minRadius: number;
+  maxRadius: number | undefined;
+  minRadius: number | undefined;
 
   constructor({
     canvas,
@@ -28,14 +31,13 @@ class Circle implements Interface, ICircle, Color, Movable {
     canvas: ICanvas;
     radius: number;
 
-    maxRadius: number;
-    minRadius: number;
+    maxRadius?: number;
+    minRadius?: number;
 
     x: number;
     y: number;
     color: {
       fillStyle?: string;
-
       strokeStyle?: string;
     };
   }) {
@@ -49,6 +51,12 @@ class Circle implements Interface, ICircle, Color, Movable {
     this.y = y;
 
     if (color.fillStyle) this.fillStyle = color.fillStyle;
+  }
+
+  freeFall(): void {}
+
+  setGravity(gravity: number): void {
+    this.gravity = gravity;
   }
 
   draw(): void {
@@ -74,20 +82,24 @@ class Circle implements Interface, ICircle, Color, Movable {
     this.y = y;
   }
 
-  update(): void {
-    const rightBounds = this.canvas.getBoundingRect().right;
-    const bottomBounds = this.canvas.getBoundingRect().bottom;
+  update(): void {}
 
-    const x = this.x;
-    const y = this.y;
-    const radius = this.radius;
+  brownianMotion(): void {
+    const circle = this;
 
-    if (x + radius > rightBounds || x - radius < 0) this.dx = -this.dx;
-    if (y + radius > bottomBounds || y - radius < 0) this.dy = -this.dy;
+    if (!circle) return;
+    const rightBounds = circle.canvas.getBoundingRect().right;
+    const bottomBounds = circle.canvas.getBoundingRect().bottom;
 
-    this.setXY(x + this.dx, y + this.dy);
+    const x = circle.x;
+    const y = circle.y;
+    const radius = circle.radius;
 
-    this.draw();
+    if (x + radius > rightBounds || x - radius < 0) circle.dx = -circle.dx;
+    if (y + radius > bottomBounds || y - radius < 0) circle.dy = -circle.dy;
+
+    circle.setXY(x + circle.dx, y + circle.dy);
+    circle.draw();
   }
 }
 

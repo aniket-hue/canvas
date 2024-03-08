@@ -9,6 +9,13 @@ export interface Movable {
   dx: number;
   dy: number;
   setVelocity(velocity: Velocity): void;
+  brownianMotion(): void;
+}
+
+export interface Gravity {
+  gravity: number;
+  setGravity(gravity: number): void;
+  freeFall(): void;
 }
 
 export interface Interface {
@@ -18,13 +25,12 @@ export interface Interface {
   y: number;
 
   draw(): void;
-  update(): void;
   setXY(x: number, y: number): void;
 }
 
 export interface Circle {
-  maxRadius: number;
-  minRadius: number;
+  maxRadius: number | undefined;
+  minRadius: number | undefined;
 }
 
 export interface Color {

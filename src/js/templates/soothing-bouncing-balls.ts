@@ -4,6 +4,7 @@ import { getRandomInRange, langrengeDistance } from "../utils.ts";
 
 let mousex: number = 0,
   mousey: number = 0;
+
 canvas.addEventListener("mousemove", (ev) => {
   mousex = ev.x;
   mousey = ev.y;
@@ -47,18 +48,18 @@ for (let i = 0; i < 1000; i++) {
 const getMeMovingAndReactiveBouncingCircles = () => {
   const animate = () => {
     requestAnimationFrame(animate);
-    canvas.getContext().clearRect(0, 0, canvas.getCanvas().width, canvas.getCanvas().height);
 
+    canvas.clearCanvas();
     circles.forEach((circle) => {
       if (mousex !== undefined && mousey !== undefined) {
-        if (langrengeDistance(mousex, mousey, circle.x, circle.y) < 50) {
+        if (circle.maxRadius && langrengeDistance(mousex, mousey, circle.x, circle.y) < 50) {
           circle.radius = Math.min(circle.radius + 1, circle.maxRadius);
-        } else if (circle.radius > circle.minRadius) {
+        } else if (circle.minRadius && circle.radius > circle.minRadius) {
           circle.radius = circle.radius - 1;
         }
       }
 
-      circle.update();
+      circle.brownianMotion();
     });
   };
   animate();

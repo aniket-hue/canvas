@@ -1,8 +1,11 @@
+import { canvas } from "../templates/canvas.ts";
+
 export interface ICanvas {
   getBoundingRect(): DOMRect;
   getCanvas(): HTMLCanvasElement;
   getContext(): CanvasRenderingContext2D;
   setCanvasSize(width: number, height: number): void;
+  clearCanvas(): void;
 
   addEventListener<K extends keyof HTMLElementEventMap>(
     type: K,
@@ -33,6 +36,10 @@ class Canvas implements ICanvas {
 
   public getContext(): CanvasRenderingContext2D {
     return this.context;
+  }
+
+  public clearCanvas(): void {
+    this.context.clearRect(0, 0, canvas.getCanvas().width, canvas.getCanvas().height);
   }
 
   public setCanvasSize(width: number, height: number): void {
