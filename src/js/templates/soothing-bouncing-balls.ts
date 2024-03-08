@@ -38,7 +38,8 @@ for (let i = 0; i < 1000; i++) {
     maxRadius,
     minRadius: radius,
   });
-  newCircle.move({ dx, dy });
+
+  newCircle.setVelocity({ dx, dy });
 
   circles.push(newCircle);
 }

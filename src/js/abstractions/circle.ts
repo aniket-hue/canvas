@@ -1,13 +1,13 @@
-import { Circle as ICircle, Color, Movable, Shapes, Velocity } from "./shapes.ts";
+import { Circle as ICircle, Color, Interface, Movable, Velocity } from "./interface.ts";
 import { ICanvas } from "./canvas.ts";
 
-class Circle implements Shapes, ICircle, Color, Movable {
+class Circle implements Interface, ICircle, Color, Movable {
   canvas: ICanvas;
 
   fillStyle: string | undefined;
 
-  dx: number = 2;
-  dy: number = 2;
+  dx: number = 0;
+  dy: number = 0;
 
   x: number;
   y: number;
@@ -64,9 +64,14 @@ class Circle implements Shapes, ICircle, Color, Movable {
     }
   }
 
-  move(velocity: Velocity) {
+  setVelocity(velocity: Velocity) {
     this.dx = velocity.dx;
     this.dy = velocity.dy;
+  }
+
+  setXY(x: number, y: number) {
+    this.x = x;
+    this.y = y;
   }
 
   update(): void {
@@ -80,8 +85,7 @@ class Circle implements Shapes, ICircle, Color, Movable {
     if (x + radius > rightBounds || x - radius < 0) this.dx = -this.dx;
     if (y + radius > bottomBounds || y - radius < 0) this.dy = -this.dy;
 
-    this.x += this.dx;
-    this.y += this.dy;
+    this.setXY(x + this.dx, y + this.dy);
 
     this.draw();
   }

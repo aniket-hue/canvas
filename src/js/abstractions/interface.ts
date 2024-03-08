@@ -8,10 +8,10 @@ export interface Velocity {
 export interface Movable {
   dx: number;
   dy: number;
-  move(velocity: Velocity): void;
+  setVelocity(velocity: Velocity): void;
 }
 
-export interface Shapes {
+export interface Interface {
   canvas: ICanvas;
 
   x: number;
@@ -19,6 +19,7 @@ export interface Shapes {
 
   draw(): void;
   update(): void;
+  setXY(x: number, y: number): void;
 }
 
 export interface Circle {
