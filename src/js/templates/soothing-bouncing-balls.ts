@@ -18,9 +18,9 @@ const circles: Circle[] = [];
 for (let i = 0; i < 1000; i++) {
   let [x, y] = getRandomXY();
 
-  const maxRadius = 70;
+  const maxRadius = 100;
 
-  const radius = getRandomInRange(5, 25);
+  const radius = getRandomInRange(2, 9);
 
   let dx = Math.random() - 0.5;
   let dy = Math.random() - 0.5;
