@@ -1,7 +1,7 @@
-import { Color, Movable, Shapes, Velocity } from "./shapes.ts";
+import { Circle as ICircle, Color, Movable, Shapes, Velocity } from "./shapes.ts";
 import { ICanvas } from "./canvas.ts";
 
-class Circle implements Shapes, Color, Movable {
+class Circle implements Shapes, ICircle, Color, Movable {
   canvas: ICanvas;
 
   fillStyle: string | undefined;
@@ -15,6 +15,7 @@ class Circle implements Shapes, Color, Movable {
   radius: number;
   maxRadius: number;
   minRadius: number;
+
   constructor({
     canvas,
     maxRadius,

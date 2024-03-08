@@ -1,24 +1,29 @@
 import { ICanvas } from "./canvas.ts";
 
-export type Velocity = { dx: number; dy: number };
+export interface Velocity {
+  dx: number;
+  dy: number;
+}
 
-export type Movable = {
+export interface Movable {
   dx: number;
   dy: number;
   move(velocity: Velocity): void;
-};
+}
 
 export interface Shapes {
   canvas: ICanvas;
-
-  maxRadius: number;
-  minRadius: number;
 
   x: number;
   y: number;
 
   draw(): void;
   update(): void;
+}
+
+export interface Circle {
+  maxRadius: number;
+  minRadius: number;
 }
 
 export interface Color {

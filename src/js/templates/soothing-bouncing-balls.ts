@@ -11,7 +11,7 @@ canvas.addEventListener("mousemove", (ev) => {
 
 const getRandomXY = () => [Math.random() * window.innerWidth, Math.random() * window.innerHeight];
 
-const colors = ["#5E1675", "#EE4266", "#FFD23F", "#337357"];
+const colors = ["#08D9D6", "#252A34", "#FF2E63", "#EAEAEA"];
 
 const circles: Circle[] = [];
 
