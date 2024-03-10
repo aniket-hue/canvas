@@ -1,19 +1,19 @@
-import { Circle as ICircle, Color, Gravity, Interface, Movable, Velocity } from "./interface.ts";
+import { Color, Shape } from "./shape.ts";
 import { ICanvas } from "./canvas.ts";
 
-class Circle implements Interface, ICircle, Color, Movable, Gravity {
+export interface ICircle {
+  maxRadius: number | undefined;
+  minRadius: number | undefined;
+}
+
+class Circle implements Shape, ICircle, Color {
   canvas: ICanvas;
 
   fillStyle: string | undefined;
   strokeStyle?: string | undefined;
 
-  gravity: number = 0;
-
-  dx: number = 0;
-  dy: number = 0;
-
-  x: number;
-  y: number;
+  x: number = 0;
+  y: number = 0;
 
   radius: number;
   maxRadius: number | undefined;
@@ -47,16 +47,9 @@ class Circle implements Interface, ICircle, Color, Movable, Gravity {
     this.maxRadius = maxRadius;
     this.minRadius = minRadius;
 
-    this.x = x;
-    this.y = y;
-
     if (color.fillStyle) this.fillStyle = color.fillStyle;
-  }
 
-  freeFall(): void {}
-
-  setGravity(gravity: number): void {
-    this.gravity = gravity;
+    this.setXY(x, y);
   }
 
   draw(): void {
@@ -72,34 +65,52 @@ class Circle implements Interface, ICircle, Color, Movable, Gravity {
     }
   }
 
-  setVelocity(velocity: Velocity) {
-    this.dx = velocity.dx;
-    this.dy = velocity.dy;
-  }
-
   setXY(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    const leftEdge = x - this.radius;
+    const rightEdge = x + this.radius;
+    const bottomEdge = y + this.radius;
+    const topEdge = y - this.radius;
+
+    const { right, top, left, bottom } = this.canvas.getBoundingRect();
+
+    // console.log(bottom, bottomEdge);
+    if (right < rightEdge) {
+      this.x = right - this.radius;
+    } else if (left > leftEdge) {
+      this.x = left + this.radius;
+    } else {
+      this.x = x;
+    }
+
+    if (bottom <= bottomEdge) {
+      this.y = bottom - this.radius;
+    } else if (top >= topEdge) {
+      this.y = top + this.radius;
+    } else {
+      this.y = y;
+    }
   }
 
-  update(): void {}
+  isAtBoundary(): {
+    left: boolean;
+    right: boolean;
+    bottom: boolean;
+    top: boolean;
+  } {
+    const shape = this;
+    const rightBounds = shape.canvas.getBoundingRect().right;
+    const bottomBounds = shape.canvas.getBoundingRect().bottom;
 
-  brownianMotion(): void {
-    const circle = this;
+    const x = shape.x;
+    const y = shape.y;
+    const radius = shape.radius;
 
-    if (!circle) return;
-    const rightBounds = circle.canvas.getBoundingRect().right;
-    const bottomBounds = circle.canvas.getBoundingRect().bottom;
-
-    const x = circle.x;
-    const y = circle.y;
-    const radius = circle.radius;
-
-    if (x + radius > rightBounds || x - radius < 0) circle.dx = -circle.dx;
-    if (y + radius > bottomBounds || y - radius < 0) circle.dy = -circle.dy;
-
-    circle.setXY(x + circle.dx, y + circle.dy);
-    circle.draw();
+    return {
+      left: x - radius <= 0,
+      right: x + radius >= rightBounds,
+      bottom: y + radius >= bottomBounds,
+      top: y - radius <= 0,
+    };
   }
 }
 

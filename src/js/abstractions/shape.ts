@@ -8,29 +8,28 @@ export interface Velocity {
 export interface Movable {
   dx: number;
   dy: number;
+
   setVelocity(velocity: Velocity): void;
-  brownianMotion(): void;
+
+  motion(shape: Shape): void;
 }
 
-export interface Gravity {
-  gravity: number;
-  setGravity(gravity: number): void;
-  freeFall(): void;
-}
-
-export interface Interface {
+export interface Shape {
   canvas: ICanvas;
 
   x: number;
   y: number;
 
   draw(): void;
-  setXY(x: number, y: number): void;
-}
 
-export interface Circle {
-  maxRadius: number | undefined;
-  minRadius: number | undefined;
+  setXY(x: number, y: number): void;
+
+  isAtBoundary(): {
+    left: boolean;
+    right: boolean;
+    bottom: boolean;
+    top: boolean;
+  };
 }
 
 export interface Color {
