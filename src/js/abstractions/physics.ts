@@ -22,9 +22,9 @@ class Physics implements IPhysics {
   mass = 1;
   frameRate = 1 / 10;
 
-  elasticity = 0.5;
-  gravity = 0.5;
-  friction = 0.5;
+  elasticity = 0.05;
+  gravity = 0.9;
+  friction = 0.05;
 
   velX = 1;
   velY = 1;
